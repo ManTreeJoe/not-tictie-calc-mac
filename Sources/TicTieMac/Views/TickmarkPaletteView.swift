@@ -57,6 +57,22 @@ struct TickmarkPaletteView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+
+            HStack(spacing: 8) {
+                Button {
+                    model.revealLegend()
+                } label: {
+                    Label("Edit Legend…", systemImage: "square.and.pencil")
+                }
+                Button {
+                    model.reloadLegend()
+                } label: {
+                    Label("Reload", systemImage: "arrow.clockwise")
+                }
+            }
+            .buttonStyle(.borderless)
+            .font(.caption)
+            .help("The legend is a shared JSON file the Acrobat plug-in uses too.")
         }
     }
 

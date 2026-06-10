@@ -15,7 +15,12 @@ let package = Package(
         // tickmark / sign-off models and number formatting. No PDFKit or
         // SwiftUI here, so it is fully unit-testable and also builds on Linux.
         .target(
-            name: "TicTieCore"
+            name: "TicTieCore",
+            resources: [
+                // Canonical, user-editable tickmark legend shared with the
+                // Acrobat plug-in (see AcrobatPlugin/generate-legend.sh).
+                .copy("Resources/tickmark-legend.json")
+            ]
         ),
         // The SwiftUI + PDFKit macOS application. All Apple-only code is
         // guarded with `#if canImport(...)` so the package still compiles on

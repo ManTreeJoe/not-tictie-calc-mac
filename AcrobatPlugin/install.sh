@@ -9,7 +9,9 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SRC="$SCRIPT_DIR/TicTie.js"
+# Install the main script plus the generated shared legend (load order is
+# alphabetical, so TicTie-legend.js defines the legend before TicTie.js runs).
+FILES=("TicTie-legend.js" "TicTie.js")
 BASE="$HOME/Library/Application Support/Adobe/Acrobat"
 
 if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
@@ -24,6 +26,12 @@ if [[ ! -d "$BASE" ]]; then
     exit 1
 fi
 
+# Make sure the generated shared legend exists before installing.
+if [[ "${1:-}" != "--uninstall" && ! -f "$SCRIPT_DIR/TicTie-legend.js" ]]; then
+    echo "Generating TicTie-legend.js from the shared legend…"
+    "$SCRIPT_DIR/generate-legend.sh"
+fi
+
 # Acrobat keeps per-version folders (DC, 2020, 24, 25, …). Install into each
 # version that exists so it works regardless of which Acrobat you launch.
 shopt -s nullglob
@@ -36,17 +44,21 @@ fi
 installed=0
 for vdir in "${versions[@]}"; do
     js_dir="${vdir}JavaScripts"
-    dest="$js_dir/TicTie.js"
     if [[ "${1:-}" == "--uninstall" ]]; then
-        if [[ -f "$dest" ]]; then
-            rm -f "$dest"
-            echo "Removed: $dest"
-            installed=$((installed + 1))
-        fi
+        for f in "${FILES[@]}"; do
+            dest="$js_dir/$f"
+            if [[ -f "$dest" ]]; then
+                rm -f "$dest"
+                echo "Removed: $dest"
+            fi
+        done
+        installed=$((installed + 1))
     else
         mkdir -p "$js_dir"
-        cp "$SRC" "$dest"
-        echo "Installed: $dest"
+        for f in "${FILES[@]}"; do
+            cp "$SCRIPT_DIR/$f" "$js_dir/$f"
+            echo "Installed: $js_dir/$f"
+        done
         installed=$((installed + 1))
     fi
 done

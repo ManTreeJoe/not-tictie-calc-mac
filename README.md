@@ -20,7 +20,10 @@ It ships **two ways** so you can use whichever fits your day:
    to compile. See [`AcrobatPlugin/`](AcrobatPlugin/README.md).
 
 The two share the same tickmark legend, tape format and sign-off style, so a
-workpaper annotated in one reads naturally in the other.
+workpaper annotated in one reads naturally in the other. The tickmark legend
+lives in one canonical, editable file
+([`Sources/TicTieCore/Resources/tickmark-legend.json`](Sources/TicTieCore/Resources/tickmark-legend.json))
+that both products read — see [Shared tickmark legend](#shared-tickmark-legend).
 
 ## Why this exists
 
@@ -98,11 +101,31 @@ double-clickable `.app` bundle, archive the **TicTieMac** scheme from Xcode.
 4. **Save** (⌘-equivalent toolbar button) to write the annotated PDF.
    `⌘Z` undoes placements and rotations.
 
+## Shared tickmark legend
+
+The tickmark palette is defined once in
+[`Sources/TicTieCore/Resources/tickmark-legend.json`](Sources/TicTieCore/Resources/tickmark-legend.json)
+and consumed by both products:
+
+- **App:** on first run it copies the default legend to
+  `~/Library/Application Support/TicTie/tickmark-legend.json`, then loads it.
+  Use **Tickmarks ▸ Edit Legend…** to open it in Finder and **Reload** to pick
+  up edits. The file is plain JSON:
+
+  ```json
+  { "tickmarks": [ { "symbol": "✓", "meaning": "Verified / agreed", "color": "green" } ] }
+  ```
+
+  (`color` is `red`, `green` or `blue`.)
+- **Acrobat plug-in:** `AcrobatPlugin/generate-legend.sh` compiles the same
+  JSON into `TicTie-legend.js`, which `install.sh` installs alongside
+  `TicTie.js`.
+
 ## Status & roadmap
 
 This is a v1 that covers the core daily workflow. Natural next steps:
-custom tickmark legends, template-driven auto-bookmarking/repagination,
-multi-document tie targets, and a signed/notarized distributable build.
+template-driven auto-bookmarking/repagination, multi-document tie targets,
+and a signed/notarized distributable build.
 
 ## License
 

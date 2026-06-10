@@ -51,6 +51,26 @@ Open a PDF workpaper, then use **View ▸ TicTie**:
 Use Acrobat's own **Save** (⌘S) to write the annotated PDF, and **Edit ▸ Undo**
 to back out a stamp.
 
+## Shared tickmark legend
+
+The tickmark palette is defined once in
+[`Sources/TicTieCore/Resources/tickmark-legend.json`](../Sources/TicTieCore/Resources/tickmark-legend.json)
+and used by **both** the standalone app and this plug-in.
+
+- The app reads (and lets you edit) a copy at
+  `~/Library/Application Support/TicTie/tickmark-legend.json`
+  (**Tickmarks ▸ Edit Legend…**).
+- For Acrobat, `generate-legend.sh` turns that JSON into `TicTie-legend.js`,
+  which `install.sh` installs next to `TicTie.js`. After editing the legend,
+  re-run:
+
+  ```bash
+  ./generate-legend.sh && ./install.sh
+  ```
+
+If `TicTie-legend.js` isn't present, the plug-in falls back to a built-in
+default palette.
+
 ## Notes & differences vs. the standalone app
 
 - Acrobat's scripting API can't capture an arbitrary click point on the page,

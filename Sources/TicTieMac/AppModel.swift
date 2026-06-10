@@ -46,6 +46,10 @@ final class AppModel: ObservableObject {
     @Published var selectedTickmarkID: UUID?
     @Published var activeColor: AnnotationColor = .red
 
+    init() {
+        loadLegend()
+    }
+
     // Calculator tape
     @Published var tape = CalculatorTape()
     @Published var tapeInput: String = ""
@@ -125,6 +129,49 @@ final class AppModel: ObservableObject {
         tool = newTool
         statusMessage = newTool.help
         if newTool != .tie { pendingTieDestination = nil }
+    }
+
+    // MARK: - Tickmark legend (shared, user-editable)
+
+    /// User-editable legend file: `~/Library/Application Support/TicTie/tickmark-legend.json`.
+    var legendURL: URL {
+        let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+            ?? FileManager.default.temporaryDirectory
+        return base.appendingPathComponent("TicTie", isDirectory: true)
+            .appendingPathComponent("tickmark-legend.json")
+    }
+
+    /// Loads the legend from disk, seeding it with the bundled default on first
+    /// run. Falls back to the compiled-in palette on any error.
+    func loadLegend() {
+        let url = legendURL
+        let fm = FileManager.default
+        do {
+            if !fm.fileExists(atPath: url.path) {
+                try fm.createDirectory(
+                    at: url.deletingLastPathComponent(),
+                    withIntermediateDirectories: true
+                )
+                try TickmarkLegend.bundled().write(to: url)
+            }
+            palette = try TickmarkLegend.load(from: url).marks
+        } catch {
+            palette = Tickmark.defaultPalette
+        }
+        if let id = selectedTickmarkID, !palette.contains(where: { $0.id == id }) {
+            selectedTickmarkID = nil
+        }
+    }
+
+    func reloadLegend() {
+        loadLegend()
+        statusMessage = "Reloaded tickmark legend (\(palette.count) marks)."
+    }
+
+    /// Reveals the legend file in Finder so the user can edit it.
+    func revealLegend() {
+        if !FileManager.default.fileExists(atPath: legendURL.path) { loadLegend() }
+        NSWorkspace.shared.activateFileViewerSelecting([legendURL])
     }
 
     // MARK: - Tape actions

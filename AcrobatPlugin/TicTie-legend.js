@@ -1,0 +1,17 @@
+/* AUTO-GENERATED from Sources/TicTieCore/Resources/tickmark-legend.json.
+   Do not edit by hand — run AcrobatPlugin/generate-legend.sh instead. */
+var TICTIE_LEGEND = {
+  "tickmarks": [
+    { "symbol": "✓",   "meaning": "Verified / agreed",            "color": "green" },
+    { "symbol": "F",   "meaning": "Footed (column adds)",         "color": "blue"  },
+    { "symbol": "C",   "meaning": "Cross-footed",                 "color": "blue"  },
+    { "symbol": "T",   "meaning": "Traced / tied to support",     "color": "green" },
+    { "symbol": "A",   "meaning": "Agreed to prior year",         "color": "green" },
+    { "symbol": "PY",  "meaning": "Per prior-year workpaper",     "color": "blue"  },
+    { "symbol": "R",   "meaning": "Recomputed",                   "color": "green" },
+    { "symbol": "N/A", "meaning": "Not applicable",               "color": "red"   },
+    { "symbol": "?",   "meaning": "Open item — follow up",        "color": "red"   },
+    { "symbol": "X",   "meaning": "Exception / discrepancy",      "color": "red"   }
+  ]
+}
+;

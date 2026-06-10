@@ -26,8 +26,11 @@ var TicTieAcro = (function () {
         blue:  ["RGB", 0.15, 0.39, 0.84]
     };
 
-    // --- Tickmark palette (mirrors TicTieCore.Tickmark.defaultPalette) -----
-    var PALETTE = [
+    // --- Tickmark palette --------------------------------------------------
+    // Prefer the shared legend (TicTie-legend.js, generated from the same
+    // tickmark-legend.json the standalone app uses) when it is installed
+    // alongside this script; otherwise fall back to this built-in default.
+    var DEFAULT_PALETTE = [
         { symbol: "✓", meaning: "Verified / agreed",        color: "green" },
         { symbol: "F",      meaning: "Footed (column adds)",     color: "blue"  },
         { symbol: "C",      meaning: "Cross-footed",             color: "blue"  },
@@ -39,6 +42,11 @@ var TicTieAcro = (function () {
         { symbol: "?",      meaning: "Open item — follow up",    color: "red"   },
         { symbol: "X",      meaning: "Exception / discrepancy",  color: "red"   }
     ];
+    var PALETTE = (typeof TICTIE_LEGEND !== "undefined" &&
+                   TICTIE_LEGEND && TICTIE_LEGEND.tickmarks &&
+                   TICTIE_LEGEND.tickmarks.length)
+        ? TICTIE_LEGEND.tickmarks
+        : DEFAULT_PALETTE;
 
     // Optional override color; when set, tickmarks use it instead of their
     // default. null == use each tickmark's own color.
