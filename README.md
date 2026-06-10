@@ -36,6 +36,11 @@ Acrobat Pro add-on.
 
 ## TicTie Mac (standalone app)
 
+Its own clean design — a card-based inspector, a signature indigo accent, and
+springy, animated interactions (tape entries slide in, the running total rolls,
+tools show an animated "placing" chip). It doesn't try to look like the original
+TicTie; it just shares the workflow.
+
 ## Feature mapping
 
 | TicTie Calculate (Windows / Acrobat) | TicTie Mac (this app)                              |
@@ -58,7 +63,7 @@ Sources/
     Tickmark         Tickmark + color models, default palette
     SignOff          Preparer/reviewer sign-off model
     Formatting       Amount parsing & grouped/fixed-fraction formatting
-  TicTieMac/         SwiftUI + PDFKit app (macOS 13+)
+  TicTieMac/         SwiftUI + PDFKit app (macOS 14+)
     AppModel         Observable app state + tool/placement actions
     PDF/             PDFDocumentController, AnnotationFactory
     Views/           PDF viewer + inspector panels
@@ -70,7 +75,7 @@ All Apple-only code is guarded with `#if canImport(SwiftUI)` /
 `#if canImport(PDFKit)`, so `TicTieCore` and its tests also build on Linux for
 CI.
 
-## Build & run (macOS 13+)
+## Build & run (macOS 14+)
 
 With the Swift toolchain that ships with Xcode 15+:
 

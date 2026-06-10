@@ -76,6 +76,17 @@ final class AppModel: ObservableObject {
         palette.first { $0.id == selectedTickmarkID } ?? palette.first
     }
 
+    /// Label + SF Symbol for the currently armed tool, or `nil` when none.
+    var toolBadge: (label: String, systemImage: String)? {
+        switch tool {
+        case .none:               return nil
+        case .tickmark:           return ("Placing tickmark", "checkmark.seal.fill")
+        case .signOff(let role):  return ("Placing \(role.displayName.lowercased()) sign-off", "signature")
+        case .tape:               return ("Placing calculator tape", "list.number")
+        case .tie:                return ("Creating tie — pick target", "link")
+        }
+    }
+
     // MARK: - Document lifecycle
 
     func open(url: URL) {

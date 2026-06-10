@@ -7,9 +7,8 @@ struct SignOffView: View {
     @ObservedObject var model: AppModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 12) {
             SectionHeader(title: "Sign-offs", systemImage: "signature")
-
             row(role: .preparer, initials: $model.preparerInitials)
             row(role: .reviewer, initials: $model.reviewerInitials)
         }
@@ -17,17 +16,20 @@ struct SignOffView: View {
 
     @ViewBuilder
     private func row(role: SignOff.Role, initials: Binding<String>) -> some View {
-        HStack(spacing: 6) {
+        let armed = model.tool == .signOff(role)
+        HStack(spacing: 8) {
             TextField("\(role.displayName) initials", text: initials)
                 .textFieldStyle(.roundedBorder)
-                .frame(maxWidth: 120)
+                .frame(maxWidth: 130)
+
             Button {
-                model.selectTool(.signOff(role))
+                withAnimation(Theme.spring) { model.selectTool(.signOff(role)) }
             } label: {
-                Label(role.displayName, systemImage: "hand.point.up.left")
+                Label(role.displayName, systemImage: armed ? "hand.point.up.left.fill" : "hand.point.up.left")
+                    .frame(maxWidth: .infinity)
             }
-            .buttonStyle(.bordered)
-            .tint(role.color.swiftUIColor)
+            .buttonStyle(.borderedProminent)
+            .tint(armed ? role.color.swiftUIColor : Color.secondary.opacity(0.5))
             .disabled(!model.isDocumentOpen)
         }
     }
