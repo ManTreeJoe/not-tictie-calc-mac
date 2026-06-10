@@ -48,6 +48,7 @@ final class AppModel: ObservableObject {
 
     init() {
         loadLegend()
+        loadTemplate()
     }
 
     // Calculator tape
@@ -61,6 +62,9 @@ final class AppModel: ObservableObject {
 
     // Tie (cross-reference)
     private var pendingTieDestination: PDFDestination?
+
+    // Auto-bookmarking
+    var bookmarkTemplate: BookmarkTemplate = .default
 
     /// The PDFView injected by the representable, so the model can drive
     /// navigation and read the live document/undo manager.
@@ -172,6 +176,59 @@ final class AppModel: ObservableObject {
     func revealLegend() {
         if !FileManager.default.fileExists(atPath: legendURL.path) { loadLegend() }
         NSWorkspace.shared.activateFileViewerSelecting([legendURL])
+    }
+
+    // MARK: - Bookmark template (shared, user-editable)
+
+    /// User-editable template file:
+    /// `~/Library/Application Support/TicTie/bookmark-template.json`.
+    var templateURL: URL {
+        let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+            ?? FileManager.default.temporaryDirectory
+        return base.appendingPathComponent("TicTie", isDirectory: true)
+            .appendingPathComponent("bookmark-template.json")
+    }
+
+    func loadTemplate() {
+        let url = templateURL
+        let fm = FileManager.default
+        do {
+            if !fm.fileExists(atPath: url.path) {
+                try fm.createDirectory(
+                    at: url.deletingLastPathComponent(),
+                    withIntermediateDirectories: true
+                )
+                try BookmarkTemplate.bundled().write(to: url)
+            }
+            bookmarkTemplate = try BookmarkTemplate.load(from: url)
+        } catch {
+            bookmarkTemplate = .default
+        }
+    }
+
+    func revealTemplate() {
+        if !FileManager.default.fileExists(atPath: templateURL.path) { loadTemplate() }
+        NSWorkspace.shared.activateFileViewerSelecting([templateURL])
+    }
+
+    /// Scans page text and adds bookmarks for every rule the template matches.
+    func autoBookmark() {
+        guard let controller else { return }
+        loadTemplate() // pick up any edits the user just made
+        let planned = BookmarkPlanner().plan(
+            pageTexts: controller.pageTexts(),
+            template: bookmarkTemplate
+        )
+        guard !planned.isEmpty else {
+            statusMessage = "No “\(bookmarkTemplate.name)” template matches found in this document."
+            return
+        }
+        for bm in planned {
+            controller.addBookmark(label: bm.title, pageIndex: bm.pageIndex)
+        }
+        refreshUnsaved()
+        objectWillChange.send()
+        statusMessage = "Added \(planned.count) bookmark(s) from “\(bookmarkTemplate.name)”."
     }
 
     // MARK: - Tape actions

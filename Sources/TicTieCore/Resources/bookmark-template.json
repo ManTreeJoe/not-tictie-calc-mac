@@ -1,0 +1,16 @@
+{
+  "name": "Form 1040 (default)",
+  "rules": [
+    { "title": "Form 1040 — U.S. Individual Income Tax Return", "keywords": ["form 1040", "1040 u.s. individual"] },
+    { "title": "Schedule A — Itemized Deductions", "keywords": ["schedule a", "itemized deductions"] },
+    { "title": "Schedule B — Interest and Dividends", "keywords": ["schedule b", "interest and ordinary dividends"] },
+    { "title": "Schedule C — Profit or Loss From Business", "keywords": ["schedule c", "profit or loss from business"] },
+    { "title": "Schedule D — Capital Gains and Losses", "keywords": ["schedule d", "capital gains and losses"] },
+    { "title": "Schedule E — Supplemental Income and Loss", "keywords": ["schedule e", "supplemental income and loss"] },
+    { "title": "W-2 — Wage and Tax Statement", "keywords": ["w-2", "wage and tax statement"] },
+    { "title": "1099-INT — Interest Income", "keywords": ["1099-int", "interest income"] },
+    { "title": "1099-DIV — Dividends and Distributions", "keywords": ["1099-div", "dividends and distributions"] },
+    { "title": "1099-NEC — Nonemployee Compensation", "keywords": ["1099-nec", "nonemployee compensation"] },
+    { "title": "1098 — Mortgage Interest Statement", "keywords": ["form 1098", "mortgage interest statement"] }
+  ]
+}

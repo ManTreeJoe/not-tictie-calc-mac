@@ -45,7 +45,7 @@ Acrobat Pro add-on.
 | Hyperlinked cross-references ("tie")  | Tie tool — click target, then place a clickable marker that jumps to it |
 | Preparer / reviewer sign-offs        | One-click sign-off stamps (`P: JD 06/10/26`)       |
 | Single-click page rotation           | Rotate the current page 90° (toolbar / panel)      |
-| Bookmarking & repagination           | Add PDF outline bookmarks; jump to them            |
+| Bookmarking & repagination           | Manual bookmarks **plus** template-driven auto-bookmarking of recognized tax forms |
 
 ## Architecture
 
@@ -121,11 +121,32 @@ and consumed by both products:
   JSON into `TicTie-legend.js`, which `install.sh` installs alongside
   `TicTie.js`.
 
+## Auto-bookmarking (templates)
+
+**Bookmarks & Pages ▸ Auto-Bookmark** scans each page's text and adds a
+bookmark for every recognized form, using an editable template of rules. The
+default template covers the Form 1040 family (1040, Schedules A–E, W-2,
+1099-INT/DIV/NEC, 1098).
+
+The template is plain JSON at
+`~/Library/Application Support/TicTie/bookmark-template.json` (seeded from
+[`Sources/TicTieCore/Resources/bookmark-template.json`](Sources/TicTieCore/Resources/bookmark-template.json));
+use **Edit Template…** to open it. Each rule is a bookmark title plus the
+keywords that identify its page:
+
+```json
+{ "title": "Schedule C — Profit or Loss From Business",
+  "keywords": ["schedule c", "profit or loss from business"] }
+```
+
+Matching is case-insensitive; a rule matches a page when the page text contains
+any of its keywords.
+
 ## Status & roadmap
 
 This is a v1 that covers the core daily workflow. Natural next steps:
-template-driven auto-bookmarking/repagination, multi-document tie targets,
-and a signed/notarized distributable build.
+multi-document tie targets, page repagination/reordering, and a
+signed/notarized distributable build.
 
 ## License
 

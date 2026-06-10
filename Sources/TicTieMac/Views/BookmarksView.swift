@@ -26,6 +26,26 @@ struct BookmarksView: View {
                 .help("Rotate the current page 90° clockwise")
             }
 
+            HStack(spacing: 8) {
+                Button {
+                    model.autoBookmark()
+                } label: {
+                    Label("Auto-Bookmark", systemImage: "wand.and.stars")
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(!model.isDocumentOpen)
+                .help("Scan page text and bookmark recognized forms using the template")
+
+                Button {
+                    model.revealTemplate()
+                } label: {
+                    Label("Edit Template…", systemImage: "slider.horizontal.3")
+                }
+                .buttonStyle(.borderless)
+                .font(.caption)
+                .help("The bookmarking template is an editable JSON file")
+            }
+
             let bookmarks = model.bookmarks()
             if bookmarks.isEmpty {
                 Text("No bookmarks yet.")

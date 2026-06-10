@@ -19,7 +19,9 @@ let package = Package(
             resources: [
                 // Canonical, user-editable tickmark legend shared with the
                 // Acrobat plug-in (see AcrobatPlugin/generate-legend.sh).
-                .copy("Resources/tickmark-legend.json")
+                .copy("Resources/tickmark-legend.json"),
+                // Default auto-bookmarking template (tax-form rules).
+                .copy("Resources/bookmark-template.json")
             ]
         ),
         // The SwiftUI + PDFKit macOS application. All Apple-only code is

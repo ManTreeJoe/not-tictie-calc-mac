@@ -93,6 +93,16 @@ final class PDFDocumentController {
         return true
     }
 
+    /// Extracted text of every page, for template-driven auto-bookmarking.
+    func pageTexts() -> [String] {
+        var texts: [String] = []
+        texts.reserveCapacity(document.pageCount)
+        for i in 0..<document.pageCount {
+            texts.append(document.page(at: i)?.string ?? "")
+        }
+        return texts
+    }
+
     /// Flat list of top-level bookmarks as `(label, pageIndex)`.
     func bookmarks() -> [(label: String, pageIndex: Int)] {
         guard let root = document.outlineRoot else { return [] }
