@@ -1,22 +1,37 @@
-# TicTie Mac
+# TicTie
 
-A native **macOS** workpaper-annotation app for tax & accounting
-professionals — an independent reimagining of the Windows-only
+A macOS workpaper-annotation toolkit for tax & accounting professionals — an
+independent reimagining of the Windows-only
 [TicTie Calculate](https://www.drakesoftware.com/products/tictie-calculate/)
-Adobe Acrobat plug-in, built as **its own thing** on Apple's
-[PDFKit](https://developer.apple.com/documentation/pdfkit) so it needs **no
-Adobe Acrobat installation**.
+Adobe Acrobat plug-in.
 
 > Open a PDF workpaper, stamp tickmarks, run an adding-machine tape, tie
 > cross-references, sign off as preparer/reviewer, rotate pages and bookmark —
 > then save the annotated PDF.
 
+It ships **two ways** so you can use whichever fits your day:
+
+1. **TicTie Mac** — a native standalone macOS app built on Apple's
+   [PDFKit](https://developer.apple.com/documentation/pdfkit). Needs **no Adobe
+   Acrobat installation**. (This repo's Swift package.)
+2. **TicTie for Acrobat** — a folder-level JavaScript add-on that puts the same
+   workflow on a **`View ▸ TicTie`** menu **inside Adobe Acrobat Pro** (macOS &
+   Windows), for when you love Acrobat too much to leave it. No native plug-in
+   to compile. See [`AcrobatPlugin/`](AcrobatPlugin/README.md).
+
+The two share the same tickmark legend, tape format and sign-off style, so a
+workpaper annotated in one reads naturally in the other.
+
 ## Why this exists
 
 TicTie Calculate is the leading Acrobat plug-in for the tax/accounting
 profession (15,000+ accountants) but ships **Windows only**. This project
-brings the same core workflow to the Mac as a standalone, sandbox-friendly
-SwiftUI app.
+brings the same core workflow to the Mac — both as a standalone app and as an
+Acrobat Pro add-on.
+
+---
+
+## TicTie Mac (standalone app)
 
 ## Feature mapping
 
